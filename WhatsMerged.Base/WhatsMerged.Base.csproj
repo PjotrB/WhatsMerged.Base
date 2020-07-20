@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Version>1.3.0</Version>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <PackageLicenseExpression>MIT-0</PackageLicenseExpression>
+    <Authors>Peter Broekhuizen</Authors>
+    <Company />
+    <Description>Delivers functionality to see which GIT branches have been merged into others.
+Output is a table datastructure with a 2-dimensional array of cells.
+Uses package GitGetter for the actual execution of GIT commands.</Description>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>C:\Users\peter.broekhuizen\source\repos\WhatsMerged.Base\WhatsMerged.Base\WhatsMerged.Base.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="GitGetter.GitExe" Version="1.2.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
+  </ItemGroup>
+
+</Project>

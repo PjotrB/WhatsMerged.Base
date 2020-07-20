@@ -1,0 +1,316 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>WhatsMerged.Base</name>
+    </assembly>
+    <members>
+        <member name="T:WhatsMerged.Base.Engine">
+            <summary>
+            The WhatsMerged Engine offers analysis of the "merged/not merged" state of branches, using the IGitGetter of your choice. The output is a MergeTable with a 2-D array of MergeCells, that can be used to render a front-end grid to show the results.
+            </summary>
+        </member>
+        <member name="P:WhatsMerged.Base.Engine.ProjectPath">
+            <summary>
+            The "checkout" path on disk of the Git Project.
+            </summary>
+        </member>
+        <member name="F:WhatsMerged.Base.Engine.SaveProjectSettings">
+            <summary>
+            An Action that the client can set, allowing the Engine to save project settings if they were changed by the Engine.
+            </summary>
+        </member>
+        <member name="F:WhatsMerged.Base.Engine.ProjectSettings">
+            <summary>
+            ProjectSettings consists of 3 lists: WorkBranches, MergeBranches and IgnoreBranches. These are used to group branches together, so we can make meaningful comparison of groups of branches (e.g. which Work-branches have been merged into which Merge-branches, or any other combination). IgnoreBranches is used to put branches in that are old, obsolete or for any other reason not interesting, so they do not clutter the results.
+            </summary>
+        </member>
+        <member name="M:WhatsMerged.Base.Engine.#ctor(GitGetter.Interfaces.IGitGetter,GitGetter.Interfaces.IErrorReporter)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="gitGetter">The IGitGetter object of your choice. It connects the Engine to the branches stored in Git.</param>
+            <param name="reporter">The IErrorReporter object that both the Engine and the IGitGetter will use to show any kinds of problems to the End User.</param>
+        </member>
+        <member name="M:WhatsMerged.Base.Engine.ApplyProjectSettings(System.String,WhatsMerged.Base.Models.Settings)">
+            <summary>
+            Apply the Path and the ProjectSettings for the Engine to use.
+            </summary>
+            <param name="projectPath"></param>
+            <param name="projectSettings"></param>
+        </member>
+        <member name="M:WhatsMerged.Base.Engine.GitRefresh">
+            <summary>
+            Update cached data for the specified git project by connecting with the remote server, as configured in the git config. Report any errors using the specified reporter.
+            </summary>
+        </member>
+        <member name="M:WhatsMerged.Base.Engine.GitLoadBranchesAndUpdateProjectSettings">
+            <summary>
+            Load remote branches for the path that has been set in property ProjectPath, then update ProjectSettings accordingly: (1) remove entries from MergeBranches and IgnoreBranches that no longer exist as remote branches; (2) load WorkBranches with all remote branches that are not present in MergeBranches or IgnoreBranches.
+            </summary>
+        </member>
+        <member name="M:WhatsMerged.Base.Engine.SortByCommitDate(System.ComponentModel.BindingList{System.String})">
+            <summary>
+            Sort the branches in the list according their Cast Commit Dates as stored in Git.
+            </summary>
+            <param name="list"></param>
+        </member>
+        <member name="M:WhatsMerged.Base.Engine.IsListForSave(System.ComponentModel.BindingList{System.String}[])">
+            <summary>
+            Return true if one or more of the specified lists are equal to any property of ProjectSettings that is saved in the project settings config file.
+            </summary>
+            <param name="lists"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WhatsMerged.Base.Engine.GetMergeTable(System.String,System.Boolean,System.Boolean,System.Boolean,System.Boolean)">
+            <summary>
+            Produce a MergeTable using branch info from Git, according to the specified from- and to-branches as kept in ProjectSettings.
+            </summary>
+            <param name="title"></param>
+            <param name="fromWork"></param>
+            <param name="fromMerge"></param>
+            <param name="toWork"></param>
+            <param name="toMerge"></param>
+            <returns></returns>
+        </member>
+        <member name="T:WhatsMerged.Base.Helpers.Disk">
+            <summary>
+            Utility class for scanning folders on a disk.
+            </summary>
+        </member>
+        <member name="M:WhatsMerged.Base.Helpers.Disk.LoadSubDirs(System.String,System.String,System.String[])">
+            <summary>
+            Scan folders recursively, starting from 'path'. For every 'folderToFind' that is found, return the folder that contains it (so excluding 'folderToFind') and don't scan any deeper.
+            If 'folderToSkip' is not empty, and we find 'folderToSkip' during the recursive search then we don't scan any deeper down that path.
+            </summary>
+            <param name="path"></param>
+            <param name="folderToFind"></param>
+            <param name="foldersToSkip"></param>
+            <returns></returns>
+        </member>
+        <member name="T:WhatsMerged.Base.Helpers.Extensions">
+            <summary>
+            Some simple but useful extension methods.
+            </summary>
+        </member>
+        <member name="M:WhatsMerged.Base.Helpers.Extensions.IsNullOrWhiteSpace(System.String)">
+            <summary>
+            Wrapper for "string.IsNullOrWhiteSpace(s)".
+            </summary>
+            <param name="s">The string to check</param>
+            <returns></returns>
+        </member>
+        <member name="M:WhatsMerged.Base.Helpers.Extensions.HasValue(System.String)">
+            <summary>
+            Wrapper for "!string.IsNullOrWhiteSpace(s)".
+            </summary>
+            <param name="s">The string to check</param>
+            <returns></returns>
+        </member>
+        <member name="M:WhatsMerged.Base.Helpers.Extensions.IsNullOrEmpty``1(System.Collections.Generic.IList{``0})">
+            <summary>
+            True if items is either null or empty; false otherwise.
+            </summary>
+            <typeparam name="T">Any type</typeparam>
+            <param name="items">The source to check for content</param>
+            <returns></returns>
+        </member>
+        <member name="M:WhatsMerged.Base.Helpers.Extensions.HasItems``1(System.Collections.Generic.IList{``0})">
+            <summary>
+            True if items is not null and also not empty; false otherwise.
+            </summary>
+            <typeparam name="T">Any type</typeparam>
+            <param name="items">The source to check for content</param>
+            <returns></returns>
+        </member>
+        <member name="M:WhatsMerged.Base.Helpers.Extensions.ToBindingList``1(System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            Creates a BindingList of T and adds everything from items to it.
+            </summary>
+            <typeparam name="T">Any type</typeparam>
+            <param name="items">The source from which to get items of type T</param>
+            <returns></returns>
+        </member>
+        <member name="M:WhatsMerged.Base.Helpers.Extensions.AddRange``1(System.ComponentModel.BindingList{``0},System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            Adds everything from itemsToAdd to the BindingList of T.
+            </summary>
+            <typeparam name="T">Any type</typeparam>
+            <param name="list">The BindingList of T object</param>
+            <param name="itemsToAdd">The source from which to get items of type T</param>
+        </member>
+        <member name="M:WhatsMerged.Base.Helpers.Extensions.RemoveRange``1(System.ComponentModel.BindingList{``0},System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            Remove everything in itemsToRemove from the BindingList of T.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="list"></param>
+            <param name="itemsToRemove"></param>
+        </member>
+        <member name="T:WhatsMerged.Base.Helpers.JsonFileHelper">
+            <summary>
+            Helper for saving/loading an object to/from disk as JSON.
+            </summary>
+        </member>
+        <member name="M:WhatsMerged.Base.Helpers.JsonFileHelper.Load``1(System.String,System.String,GitGetter.Interfaces.IErrorReporter)">
+            <summary>
+            Try to load a JSON file from the specified path and deserialize it as an object of type T. If there is no such file, a default(T) object is returned. Errors are shown by means of the IErrorReporter object.
+            </summary>
+            <param name="path"></param>
+            <param name="filename"></param>
+            <param name="reporter"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WhatsMerged.Base.Helpers.JsonFileHelper.Save``1(``0,System.String,System.String,GitGetter.Interfaces.IErrorReporter)">
+            <summary>
+            Try to save the specified object as a file on the specified path. Errors are shown by means of the IErrorReporter object.
+            </summary>
+            <param name="settings"></param>
+            <param name="path"></param>
+            <param name="filename"></param>
+            <param name="reporter"></param>
+        </member>
+        <member name="T:WhatsMerged.Base.Models.MergeCell">
+            <summary>
+            A cell that can be used in a MergeTable, with a Type and a Text.
+            </summary>
+        </member>
+        <member name="F:WhatsMerged.Base.Models.MergeCell.Type">
+            <summary>
+            The cell type.
+            </summary>
+        </member>
+        <member name="F:WhatsMerged.Base.Models.MergeCell.Text">
+            <summary>
+            The cell text.
+            </summary>
+        </member>
+        <member name="T:WhatsMerged.Base.Models.CellType">
+            <summary>
+            Enum for the Type of a MergeCell
+            </summary>
+        </member>
+        <member name="F:WhatsMerged.Base.Models.CellType.SubTitle">
+            <summary></summary>
+        </member>
+        <member name="F:WhatsMerged.Base.Models.CellType.BranchName">
+            <summary></summary>
+        </member>
+        <member name="F:WhatsMerged.Base.Models.CellType.BranchDate">
+            <summary></summary>
+        </member>
+        <member name="F:WhatsMerged.Base.Models.CellType.Merged">
+            <summary></summary>
+        </member>
+        <member name="F:WhatsMerged.Base.Models.CellType.NotMerged">
+            <summary></summary>
+        </member>
+        <member name="F:WhatsMerged.Base.Models.CellType.SelfJoin">
+            <summary></summary>
+        </member>
+        <member name="T:WhatsMerged.Base.Models.MergeHeader">
+            <summary>
+            A header that can be used in a MergeTable, with a Type and a Text.
+            </summary>
+        </member>
+        <member name="F:WhatsMerged.Base.Models.MergeHeader.Type">
+            <summary>
+            The header type.
+            </summary>
+        </member>
+        <member name="F:WhatsMerged.Base.Models.MergeHeader.Text">
+            <summary>
+            The header text.
+            </summary>
+        </member>
+        <member name="T:WhatsMerged.Base.Models.HeaderCellType">
+            <summary>
+            Enum for the Type of a MergeHeader
+            </summary>
+        </member>
+        <member name="F:WhatsMerged.Base.Models.HeaderCellType.Regular">
+            <summary></summary>
+        </member>
+        <member name="F:WhatsMerged.Base.Models.HeaderCellType.Title">
+            <summary></summary>
+        </member>
+        <member name="F:WhatsMerged.Base.Models.HeaderCellType.BranchName">
+            <summary></summary>
+        </member>
+        <member name="T:WhatsMerged.Base.Models.MergeTable">
+            <summary>
+            The table type that is generated by the Engine class.
+            </summary>
+        </member>
+        <member name="F:WhatsMerged.Base.Models.MergeTable.RowCount">
+            <summary>
+            Total number of Rows in the 2D Cells array. Can only be set through the Constructor.
+            </summary>
+        </member>
+        <member name="F:WhatsMerged.Base.Models.MergeTable.RowFrozenCount">
+            <summary>
+            The number of Rows for which it makes sense to display as frozen rows. Can only be set through the Constructor.
+            </summary>
+        </member>
+        <member name="F:WhatsMerged.Base.Models.MergeTable.ColCount">
+            <summary>
+            Total number of Columns in the 2D Cells array. Can only be set through the Constructor.
+            </summary>
+        </member>
+        <member name="F:WhatsMerged.Base.Models.MergeTable.ColFrozenCount">
+            <summary>
+            The number of Columns for which it makes sense to display as frozen columns. Can only be set through the Constructor.
+            </summary>
+        </member>
+        <member name="F:WhatsMerged.Base.Models.MergeTable.RowHeaders">
+            <summary>
+            Row headers for display to the left of the 2D Cells array. Will be null if the Constructor was called with hasRowHeaders=false.
+            </summary>
+        </member>
+        <member name="F:WhatsMerged.Base.Models.MergeTable.ColHeaders">
+            <summary>
+            Column headers for display above the 2D Cells array. Will be null if the Constructor was called with hasColHeaders=false.
+            </summary>
+        </member>
+        <member name="F:WhatsMerged.Base.Models.MergeTable.Cells">
+            <summary>
+            The 2D array of MergeCell objects. Each MergeCell will have a text and a type that can be used for displaying the Merge Table to the user.
+            </summary>
+        </member>
+        <member name="M:WhatsMerged.Base.Models.MergeTable.#ctor(System.Int32,System.Int32,System.Int32,System.Int32,System.Boolean,System.Boolean)">
+            <summary>
+            MergeTable Constructor.
+            </summary>
+            <param name="rowCount"></param>
+            <param name="rowFrozenCount"></param>
+            <param name="colCount"></param>
+            <param name="colFrozenCount"></param>
+            <param name="hasRowHeaders"></param>
+            <param name="hasColHeaders"></param>
+        </member>
+        <member name="T:WhatsMerged.Base.Models.Settings">
+            <summary>
+            Settings contains 3 BindingLists. These are used by the WhatsMerged Engine to compare "Work" and/or "Merge" branches with each other, while ignoring the "Ignore" group of branches.
+            </summary>
+        </member>
+        <member name="P:WhatsMerged.Base.Models.Settings.WorkBranches">
+            <summary>
+            The "Work" branches. Contains all branches that are not in the "Merge" or "Ignore" branch lists.
+            </summary>
+        </member>
+        <member name="P:WhatsMerged.Base.Models.Settings.MergeBranches">
+            <summary>
+            The "Merge" branches. This is where "Work" branches usually are merged into, and also from where Releases are created.
+            </summary>
+        </member>
+        <member name="P:WhatsMerged.Base.Models.Settings.IgnoreBranches">
+            <summary>
+            The "Ignore" branches. Contains all branches that are old or obsolete. They still exist, bus are not relevant or interesing when doing branch compare actions.
+            </summary>
+        </member>
+        <member name="M:WhatsMerged.Base.Models.Settings.#ctor">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+    </members>
+</doc>
