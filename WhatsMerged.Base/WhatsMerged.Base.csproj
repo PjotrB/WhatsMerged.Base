@@ -19,7 +19,7 @@ Uses package GitGetter for the actual execution of GIT commands.</Description>
 
   <ItemGroup>
     <PackageReference Include="GitGetter.GitExe" Version="1.2.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
   </ItemGroup>
 
 </Project>
