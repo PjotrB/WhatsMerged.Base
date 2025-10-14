@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>1.3.0</Version>
+    <Version>1.4.0</Version>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <PackageLicenseExpression>MIT-0</PackageLicenseExpression>
     <Authors>Peter Broekhuizen</Authors>
@@ -18,8 +18,8 @@ Uses package GitGetter for the actual execution of GIT commands.</Description>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="GitGetter.GitExe" Version="1.2.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
+    <PackageReference Include="GitGetter.GitExe" Version="1.3.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
   </ItemGroup>
 
 </Project>
