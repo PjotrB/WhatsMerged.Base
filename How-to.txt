@@ -1,0 +1,8 @@
+How to build and publish a NuGet package
+
+(1) Run this command:
+    dotnet pack -c Release
+
+(2) Log in to Nuget.org and then upload the generated .nupkg file from the ./bin/Release folder.
+    Or if you have obtained a NuGet API Key, you can use the command line to publish it:
+    dotnet nuget push ./bin/Release/<<YourPackageName>>.<<Version>>.nupkg -k <<YourApiKey>> -s https://api.nuget.org/v3/index.json
